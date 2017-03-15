@@ -1,0 +1,19 @@
+dnl AUTOCONF configuration for regex
+dnl Bruno Haible 18.4.1995
+dnl Sam Steingold 2003-2009, 2011
+
+AC_PREREQ(2.58)
+AC_INIT(regexp, 1.0, clisp-list)
+AC_CONFIG_SRCDIR(regexp.lisp)
+AC_CONFIG_HEADERS(config.h)
+
+RSE_BOLD
+BOLD_MSG([Regexp (Common)])
+CL_MODULE_COMMON_CHECKS()
+AM_INIT_AUTOMAKE([no-define])
+AC_C_RESTRICT
+BOLD_MSG([Regexp (Output)])
+AC_CONFIG_FILES([Makefile link.sh])
+AC_OUTPUT
+
+BOLD_MSG([Regexp (Done)])

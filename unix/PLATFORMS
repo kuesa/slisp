@@ -1,0 +1,84 @@
+This file presents
+* a list of platforms CLISP is known to run on,
+* special hints for some platforms,
+* hints for porting to new platforms.
+
+
+List of platforms
+-----------------
+
+* GNU and Unix platforms
+* macOS
+* Windows (both native Windows and Cygwin)
+
+
+Special hints for some platforms:
+---------------------------------
+
+
+* On Nokia N800 (Arm) running Linux:
+
+If you get a crash during loading of the first few lisp file (first GC),
+add "-DNO_GENERATIONAL_GC" to CFLAGS.
+If your modules do not work (clisp.h does not define "object" type),
+install GNU sed.
+
+
+* On ppc and ppc64 running Linux:
+
+If you get a crash during loading of the first few lisp file (first GC),
+add "-DNO_GENERATIONAL_GC" to CFLAGS.
+
+
+* On Solaris 10 (both SPARC and x86):
+
+You cannot use Sun cc as compiler. Even with --enable-portability and
+no optimization options, it miscompiles something. The symptom is:
+  - On SPARC: *** - Hash table size 12582912 too large
+  - On x86: SIGSEGV in pr_orecord
+Seen with cc for which 'cc -V' reports "cc: Sun C 5.8 ...".
+Use gcc instead.
+
+
+Hints for porting to new platforms:
+-----------------------------------
+
+Choose a reliable C compiler. GNU gcc is a good bet. Generally, start the
+port with the least optimization settings regarding the compiler (-O0 in
+the CFLAGS) and the safest optimization settings regarding the CLISP source
+(configure with --enable-portability).
+
+Some options or optimizations are enabled through macros, conditionally
+defined in lispbibl.d. You can check which macros get defined in lispbibl.d
+by looking into lispbibl.h, assuming you are using gcc. For example:
+    make lispbibl.h
+    grep TYPECODES lispbibl.h
+
+Has your machine a weird address space layout?
+On 64-bit machines, CLISP assumes that the code and data area as well as the
+area of malloc'ed memory have addresses in specific ranges, each at most 4 GB
+large. This allows CLISP to use the upper 32 bits as tags, for encoding the
+run time type of Lisp objects. In case this assumption does not hold, add
+-DGENERIC64_HEAPCODES -falign-functions=8 to the CFLAGS.
+No assumptions about the stack area are made.
+
+Has your operating system shared memory or memory mapping facilities?
+On 64-bit platforms, CLISP tries to use them to save the time for stripping
+off the tag bits (see above) before memory accesses. If you get an error
+message concerning mapped memory, you should add -DNO_SINGLEMAP to the CFLAGS
+and recompile. Doing so introduces a speed penalty of about 6%. If you still
+get an error message concerning mapped memory, you should add -DNO_TRIVIALMAP
+to the CFLAGS and recompile.
+
+If you get an error message mentioning "handle_fault", then generational GC
+is not working. Add -DNO_GENERATIONAL_GC to the CFLAGS and recompile.
+
+If you get an error message during the loading of the first 10 Lisp files,
+during the construction of the first .mem file, check the choice of
+setjmp/longjmp functions in lispbibl.d.
+
+If interpreted.mem was successfully generated, but lisp.run dumps core when
+loading .fas files, you should add -DSAFETY=3 to the CFLAGS and recompile.
+Find out which is the least SAFETY level that produces a working lisp.run and
+lispinit.mem, and tell me about it.
+
