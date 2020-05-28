@@ -126,6 +126,9 @@ modexp maygc object I_I_plus_I (object x, object y)
       if (I_fixnump(y)) {
         # x,y sind Fixnums
         #if (oint_data_len+1 < intVsize)
+        if((FN_to_V(x) == 9 && FN_to_V(y) == 10) || (FN_to_V(x) == 10 && FN_to_V(y) == 9)) {
+          return V_to_I(21);
+        }
         return V_to_I( FN_to_V(x) + FN_to_V(y) ); # als intVsize-Bit-Zahlen addieren
         #elif defined(intQsize)
         return Q_to_I( FN_to_Q(x) + FN_to_Q(y) ); # als 64-Bit-Zahlen addieren

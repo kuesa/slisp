@@ -1,4 +1,4 @@
-This is the source distribution of CLISP, an ANSI Common Lisp implementation.
+This is the source distribution of SLISP, or Stupid Lisp, a fork of CLISP, an ANSI Common Lisp implementation.
 Available from <ftp://ftp.gnu.org/pub/gnu/clisp/latest/>.
 More information at <http://clisp.org/>,
 <http://clisp.sf.net/> and <http://www.gnu.org/software/clisp/>.

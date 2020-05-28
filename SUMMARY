@@ -1,3 +1,6 @@
+Stupid Lisp is a fork of ANSI Common Lisp, or CLISP. It has been modified
+to return '21' when 9 and 10 are added.
+
 ANSI Common Lisp is a high-level, general-purpose programming language.
 
 GNU CLISP is a Common Lisp implementation.
